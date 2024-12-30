@@ -1,0 +1,229 @@
+<div class="p-4 bg-gray-100 rounded-lg shadow-md">
+  <h2 class="text-2xl font-bold mb-4">Pizza Shop</h2>
+
+  <!-- Pizza Cards -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <div *ngFor="let pizza of pizzas" class="bg-white p-4 rounded-lg shadow">
+      <h3 class="text-lg font-bold mb-2">{{ pizza.name }}</h3>
+      <p class="text-gray-600 mb-2">{{ pizza.description }}</p>
+      <p class="text-green-600 font-semibold mb-4">Price: ${{ pizza.price }}</p>
+      <button
+        type="button"
+        class="w-full px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600"
+        (click)="openCustomizationPopup(pizza)"
+      >
+        Add
+      </button>
+    </div>
+  </div>
+</div>
+
+<button
+  type="button"
+  class="w-full px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600"
+  (click)="toggleFavoritesPopup()"
+>
+  View Favorites
+</button>
+
+<div
+  *ngIf="showCustomizationPopup"
+  class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
+>
+  <div class="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full">
+    <h3 class="text-xl font-bold mb-4">Customize Your Pizza</h3>
+
+    <!-- Pizza Name -->
+    <div class="mb-4">
+      <label class="block text-gray-700">Pizza Name</label>
+      <input
+        type="text"
+        [(ngModel)]="pizzaName"
+        class="w-full p-2 border rounded"
+        placeholder="Enter a name for your pizza"
+      />
+    </div>
+
+    <!-- Size -->
+    <div class="mb-4">
+      <label class="block text-gray-700">Size</label>
+      <select [(ngModel)]="pizzaSize" class="w-full p-2 border rounded">
+        <option value="Small">Small</option>
+        <option value="Medium">Medium</option>
+        <option value="Large">Large</option>
+      </select>
+    </div>
+
+    <!-- Toppings -->
+    <div class="mb-4">
+      <label class="block text-gray-700">Toppings</label>
+      <select [(ngModel)]="topping" class="w-full p-2 border rounded">
+        <option value="Cheese">Cheese</option>
+        <option value="Pepperoni">Pepperoni</option>
+        <option value="Veggie">Veggie</option>
+      </select>
+    </div>
+
+    <!-- Crust -->
+    <div class="mb-4">
+      <label class="block text-gray-700">Crust</label>
+      <select [(ngModel)]="crust" class="w-full p-2 border rounded">
+        <option value="Thin">Thin</option>
+        <option value="Thick">Thick</option>
+        <option value="Stuffed">Stuffed</option>
+      </select>
+    </div>
+
+    <!-- Extra Toppings -->
+    <div class="mb-4">
+      <label class="block text-gray-700">Extra Toppings:</label>
+      <input type="checkbox" [(ngModel)]="extraToppings" class="mt-1" /> Yes
+    </div>
+
+    <!-- Special Packaging -->
+    <div class="mb-4">
+      <label class="block text-gray-700">Special Packaging:</label>
+      <input type="checkbox" [(ngModel)]="specialPackaging" class="mt-1" /> Yes
+    </div>
+
+    <!-- Buttons -->
+    <div class="flex space-x-1">
+      <!-- Add to Order -->
+      <button
+        type="button"
+        class="w-full px-4 py-2 text-white bg-green-500 rounded hover:bg-green-600"
+        (click)="
+          addToOrder(); PizzaCustomization(); deceratorPatternController()
+        "
+      >
+        Add Order
+      </button>
+
+      <!-- Add to Favorites -->
+      <button
+        type="button"
+        class="w-full px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600"
+        (click)="addToFavorites()"
+      >
+        Add to Favorites
+      </button>
+    </div>
+  </div>
+</div>
+
+<ul>
+  <li
+    *ngFor="let order of orderList; let i = index"
+    class="mb-4 p-4 border border-gray-300 rounded-lg shadow-sm"
+  >
+    <div class="flex justify-between items-center">
+      <h3 class="text-lg font-bold text-gray-700">{{ order.name }}</h3>
+      <p class="text-green-700 font-semibold">Price: ${{ order.price }}</p>
+    </div>
+    <p class="text-gray-600">Size: {{ order.size }}</p>
+    <p class="text-gray-600">Topping: {{ order.topping }}</p>
+    <p class="text-gray-600">Crust: {{ order.crust }}</p>
+    <p class="text-gray-600">
+      Extra Toppings: {{ order.extraToppings ? "Yes" : "No" }}
+    </p>
+    <p class="text-gray-600">
+      Special Packaging: {{ order.specialPackaging ? "Yes" : "No" }}
+    </p>
+
+    <!-- Real-Time Order Tracking -->
+    <div class="mt-4">
+      <label class="block text-gray-700 font-medium">Order Tracking</label>
+      <p class="text-gray-600">
+        Status: <span class="font-semibold">{{ order.status }}</span>
+      </p>
+    </div>
+
+    <!-- Set Status Button -->
+    <button
+      type="button"
+      class="mt-4 w-full px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300"
+      (click)="updateStatus(order)"
+    >
+      Update Status
+    </button>
+
+    <!-- Payment Section -->
+    <div class="mt-4">
+      <label class="block text-gray-700 font-medium mb-2">Payment Method</label>
+      <select
+        [(ngModel)]="order.paymentMethod"
+        class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-300"
+      >
+        <option value="creditCardPayment">creditCardPayment</option>
+        <option value="PayPal">PayPal</option>
+        <option value="Cash">Cash</option>
+      </select>
+    </div>
+
+    <button
+      type="button"
+      class="mt-4 w-full px-4 py-2 text-white bg-green-500 rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-300"
+      (click)="strategyPattern()"
+    >
+      Pay Now
+    </button>
+
+    <!-- Feedback Section -->
+    <div class="mt-6">
+      <label class="block text-gray-700 font-medium mb-2"
+        >Provide Feedback</label
+      >
+      <textarea
+        [(ngModel)]="order.feedback"
+        rows="3"
+        class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-300"
+        placeholder="Write your feedback here..."
+      ></textarea>
+      <button
+        type="button"
+        class="mt-4 w-full px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300"
+        (click)="provideFeedback()"
+      >
+        Submit Feedback
+      </button>
+    </div>
+  </li>
+</ul>
+
+<div
+  *ngIf="showFavoritesPopup"
+  class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
+>
+  <div class="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full">
+    <h3 class="text-xl font-bold mb-4">Your Favorites</h3>
+
+    <ul>
+      <li
+        *ngFor="let favorite of favoritesList"
+        class="mb-4 p-4 border border-gray-300 rounded-lg shadow-sm"
+      >
+        <div class="flex justify-between items-center">
+          <h3 class="text-lg font-bold text-gray-700">{{ favorite.name }}</h3>
+        </div>
+        <p class="text-gray-600">Size: {{ favorite.size }}</p>
+        <p class="text-gray-600">Topping: {{ favorite.topping }}</p>
+        <p class="text-gray-600">Crust: {{ favorite.crust }}</p>
+        <p class="text-gray-600">
+          Extra Toppings: {{ favorite.extraToppings ? "Yes" : "No" }}
+        </p>
+        <p class="text-gray-600">
+          Special Packaging: {{ favorite.specialPackaging ? "Yes" : "No" }}
+        </p>
+      </li>
+    </ul>
+
+    <!-- Close Button -->
+    <button
+      type="button"
+      class="w-full px-4 py-2 mt-4 text-white bg-red-500 rounded hover:bg-red-600"
+      (click)="toggleFavoritesPopup()"
+    >
+      Close
+    </button>
+  </div>
+</div>

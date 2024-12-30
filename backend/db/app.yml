@@ -1,0 +1,6 @@
+name: mimipizza_1
+services:
+  mongodb:
+    extends:
+      file: ./mongodb.yml
+      service: mongodb

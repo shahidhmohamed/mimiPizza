@@ -1,0 +1,67 @@
+<div class="bg-white rounded-lg shadow-lg max-w-md mx-auto p-6">
+  <h2 class="text-xl font-semibold text-gray-800 mb-4">Create User Profile</h2>
+  <form #profileForm="ngForm" class="space-y-4">
+    <!-- Name Field -->
+    <div>
+      <label for="name" class="block text-sm font-medium text-gray-700"
+        >Name</label
+      >
+      <input
+        type="text"
+        id="name"
+        name="name"
+        [(ngModel)]="userProfile.name"
+        required
+        class="w-full mt-1 p-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500"
+      />
+    </div>
+
+    <!-- Email Field -->
+    <div>
+      <label for="email" class="block text-sm font-medium text-gray-700"
+        >Email</label
+      >
+      <input
+        type="email"
+        id="email"
+        name="email"
+        [(ngModel)]="userProfile.email"
+        required
+        class="w-full mt-1 p-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500"
+      />
+    </div>
+
+    <!-- Phone Field -->
+    <div>
+      <label for="phone" class="block text-sm font-medium text-gray-700"
+        >Phone</label
+      >
+      <input
+        type="tel"
+        id="phone"
+        name="phone"
+        [(ngModel)]="userProfile.phone"
+        class="w-full mt-1 p-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500"
+      />
+    </div>
+  </form>
+
+  <!-- Actions -->
+  <div class="mt-6 flex justify-end space-x-4">
+    <button
+      type="button"
+      (click)="dialogRef.close()"
+      class="px-4 py-2 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400"
+    >
+      Cancel
+    </button>
+    <button
+      type="button"
+      (click)="saveProfile()"
+      [disabled]="!profileForm.form.valid"
+      class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 disabled:opacity-50"
+    >
+      Save
+    </button>
+  </div>
+</div>
